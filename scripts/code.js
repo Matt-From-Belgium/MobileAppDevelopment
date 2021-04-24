@@ -1,7 +1,37 @@
+let globalSettings={
+    favorietLand:"",
+    favorietekleur:"",
+};
+
 $( document ).ready(function(){
+    loadSettings();
     prepareSpeelVeld();
     console.log('document ready');
+
+    $('#formFavorietLand').submit(()=>{
+        saveSettings();
+    })
 })
+
+const saveSettings = () => {
+    globalSettings.favorietLand = document.getElementById("favorietland").value;
+    globalSettings.favorietekleur = document.getElementById('kleur').value;
+
+    localStorage.setItem('Instellingen',JSON.stringify(globalSettings));
+    console.log("instellingen opgeslagen");
+}
+
+const loadSettings = () => {
+    let settings = localStorage.getItem('Instellingen');
+    if(settings !== null){
+        globalSettings = JSON.parse(settings);
+        console.log("settings geladen");
+    }
+    else
+    {
+        console.log("geen settings gevonden");
+    }
+}
 
 const prepareSpeelVeld = () =>{
 
