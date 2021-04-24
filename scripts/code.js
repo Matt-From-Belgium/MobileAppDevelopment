@@ -69,7 +69,9 @@ const loadData = () =>{
         speeldag2.matchen.push(new Match("België","Rusland"));
         speeldag2.matchen.push(new Match("Zuid-Korea","Algerije"));
 
-        let speelData = {speeldag1,speeldag2};
+        speelData.push(speeldag1);
+        speelData.push(speeldag2);
+
         localStorage.setItem("speelData",JSON.stringify(speelData));
 
         console.log("speeldata aangemaakt");
@@ -90,7 +92,9 @@ const loadData = () =>{
             $("#speelDataListView").append(li);
             $("#speelDataListView").listview("refresh");
 
-            
+            $("#speelDataListView li").click((e)=>{
+                loadSpeeldag(e);
+            })
         }
 }
 
@@ -107,12 +111,10 @@ const prepareSpeelVeld = () =>{
     },500);
 }
 
-const addBall = () =>{
-
-}
-
 const loadSpeeldag = (e) =>{
-
+    let li = e.currentTarget;
+    let speeldagIndex = $(li).jqmData("speeldag-index");
+    alert(speeldagIndex);
 }
 
 const startGame = () => {
