@@ -3,6 +3,8 @@ let globalSettings={
     favorietekleur:"",
 };
 
+let speelData = [];
+
 class Match{
     constructor(thuisploeg,uitploeg) {
         this.thuisploeg = thuisploeg;
@@ -22,6 +24,7 @@ class speeldag{
 
 $( document ).ready(function(){
     $("#speelDataListView").listview();
+    $("#speeldagMatchListView").listview();
     loadSettings();
     loadData();
     prepareSpeelVeld();
@@ -53,7 +56,6 @@ const loadSettings = () => {
 }
 
 const loadData = () =>{
-    let speelData = [];
     let speelDataString = localStorage.getItem("speelData");
     if(speelDataString !== null){
         speelData = JSON.parse(speelDataString);
@@ -89,12 +91,11 @@ const loadData = () =>{
 
             $(li).append(a);
 
+            $(li).click(loadSpeeldag)
+
             $("#speelDataListView").append(li);
             $("#speelDataListView").listview("refresh");
 
-            $("#speelDataListView li").click((e)=>{
-                loadSpeeldag(e);
-            })
         }
 }
 
@@ -112,9 +113,28 @@ const prepareSpeelVeld = () =>{
 }
 
 const loadSpeeldag = (e) =>{
-    let li = e.currentTarget;
-    let speeldagIndex = $(li).jqmData("speeldag-index");
-    alert(speeldagIndex);
+    
+    let target = e.currentTarget;
+    let speeldagIndex = $(target).jqmData("speeldag-index");
+    let speeldag = speelData[speeldagIndex];
+
+    let matchlist = $("#speeldagMatchListView");
+    $(matchlist).empty();
+
+    for(let match in speeldag.matchen){
+        let newLi = document.createElement("li");
+        let newA = document.createElement("a");
+        newA.href="#pageSpeelveld";
+        newA.innerText= speeldag.matchen[match].thuisploeg + "- " + speeldag.matchen[match].uitploeg + " : " + speeldag.matchen[match].thuisscore + " - "+ speeldag.matchen[match].uitscore;
+
+        newLi.appendChild(newA);
+        $(matchlist).append(newLi);
+    }
+
+    matchlist.listview("refresh");
+
+
+
 }
 
 const startGame = () => {
