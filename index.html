@@ -11,7 +11,59 @@
     <title>Title</title>
 </head>
 <body>
+    <!-- Page -->
+    <div data-role="page" id="pageMain">
+        <div data-role="header" data-theme="b">
+            <a href="#pageFavoriet" class="ui-btn ui-btn-corner-all ui-btn-icon-left ui-icon-gear">Favoriet land</a>
+            <h1>Uitslagen</h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview">
+                <li><a href="#pageSpeeldag">Speeldag1</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- Page -->
+    <div data-role="page" id="pageFavoriet">
+        <div data-role="header" data-theme="b">
+            <a data-rel="back" class="ui-btn ui-btn-corner-all">Cancel</a>
+            <h1>Favoriete ploeg</h1>
+        </div>
+        <div data-role="content">
+            <form id="formFavorietLand">
+                <label>Favoriet land</label>
+                <select id="favoriet land">
+                    <option value="Algerije">Algerije</option>
+                    <option value="België">België</option>
+                    <option value="Rusland">Rusland</option>
+                    <option value="Zuid-Korea">Zuid-Korea</option>
+                </select>
+                <label>Kleur</label>
+                <input type="color" id="kleur">
+                <input type="submit" value="Save settings">
+            </form>
+        </div>
+    </div>
+    <!-- Page -->
+    <div data-role="page" id="pageSpeeldag">
 
+        <div data-role="header" data-theme="b">
+            <a data-rel="back" class="ui-btn ui-btn-corner-all ui-btn-icon-left ui-icon-arrow-l">Back</a>
+            <h1>speeldag <span id="speeldagNr">X</span></h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview">
+                <li><a href="#pageSpeelveld">thuisploeg - uitploeg: 0-0</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- Page -->
+    <div data-role="page" id="pageSpeelveld">
+
+        <div data-role="content" id="speelveld">
+            <a data-rel="back" class="ui-btn ui-btn-inline ui-btn-icon-left ui-btn-corner-all ui-icon-arrow-l">Back</a>
+        </div>
+    </div>
 
 </body>
 </html>

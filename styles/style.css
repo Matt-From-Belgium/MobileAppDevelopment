@@ -1,0 +1,9 @@
+#speelveld{
+    background-color: darkgreen;
+}
+
+#bal{
+    display: block;
+    position: absolute;
+
+}
