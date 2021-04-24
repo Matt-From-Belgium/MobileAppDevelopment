@@ -3,8 +3,27 @@ let globalSettings={
     favorietekleur:"",
 };
 
+class Match{
+    constructor(thuisploeg,uitploeg) {
+        this.thuisploeg = thuisploeg;
+        this.uitploeg = uitploeg;
+        this.thuisscore = 0;
+        this.uitscore = 0;
+    }
+}
+
+class speeldag{
+    constructor() {
+        this.matchen = [];
+
+    }
+
+}
+
 $( document ).ready(function(){
+    $("#speelDataListView").listview();
     loadSettings();
+    loadData();
     prepareSpeelVeld();
     console.log('document ready');
 
@@ -33,6 +52,48 @@ const loadSettings = () => {
     }
 }
 
+const loadData = () =>{
+    let speelData = [];
+    let speelDataString = localStorage.getItem("speelData");
+    if(speelDataString !== null){
+        speelData = JSON.parse(speelDataString);
+        console.log("speeldata geladen")
+    }
+    else{
+        console.log('geen speeldata gevonden => creëren');
+        let speeldag1 = new speeldag();
+        speeldag1.matchen.push(new Match("België","Algerije"));
+        speeldag1.matchen.push(new Match("Rusland","Zuid-Korea"));
+
+        let speeldag2 = new speeldag();
+        speeldag2.matchen.push(new Match("België","Rusland"));
+        speeldag2.matchen.push(new Match("Zuid-Korea","Algerije"));
+
+        let speelData = {speeldag1,speeldag2};
+        localStorage.setItem("speelData",JSON.stringify(speelData));
+
+        console.log("speeldata aangemaakt");
+
+    }
+
+        for(let speeldag in speelData){
+            let li = document.createElement("li");
+            $(li).jqmData("speeldag-index",speeldag);
+
+
+            let a = document.createElement("a");
+            $(a).text(speeldag);
+            a.href="#pageSpeeldag";
+
+            $(li).append(a);
+
+            $("#speelDataListView").append(li);
+            $("#speelDataListView").listview("refresh");
+
+            
+        }
+}
+
 const prepareSpeelVeld = () =>{
 
 
@@ -47,6 +108,10 @@ const prepareSpeelVeld = () =>{
 }
 
 const addBall = () =>{
+
+}
+
+const loadSpeeldag = (e) =>{
 
 }
 
