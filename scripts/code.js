@@ -106,14 +106,10 @@ const prepareSpeelVeld = () =>{
     speelveld.style.display='block';
     speelveld.style.width = window.innerWidth + "px";
     speelveld.style.height = window.innerHeight + "px";
-
-    setTimeout(()=>{
-        startGame()
-    },500);
 }
 
 const loadSpeeldag = (e) =>{
-    
+
     let target = e.currentTarget;
     let speeldagIndex = $(target).jqmData("speeldag-index");
     let speeldag = speelData[speeldagIndex];
@@ -129,42 +125,63 @@ const loadSpeeldag = (e) =>{
 
         newLi.appendChild(newA);
         $(matchlist).append(newLi);
+        $(newLi).jqmData("match-index", match);
+        $(newLi).jqmData('speeldag-index', speeldag);
+        $(newLi).click((e)=>{
+            loadMatch(e)
+        })
     }
 
     matchlist.listview("refresh");
 
+const loadMatch=(e)=>{
+    let target = e.currentTarget;
+    let match = $(target).jqmData('match-index');
+    let speeldag = $(target).jqmData('speeldag-index');
 
+
+    startGame(speeldag.matchen[match]);
+}
 
 }
 
-const startGame = () => {
-    let speelveld = document.getElementById("speelveld");
+const startGame = (match) => {
+    let speelveld = $("#speelveld");
+    speelveld.empty();
 
     let bal = document.createElement("img");
-    bal.id="bal";
-    bal.src='images/ball.png';
+    $(bal).attr("src","images/ball.png");
+    $(bal).attr("id","bal");
 
-    bal.style.left = ((speelveld.clientWidth - bal.offsetWidth)/2)+'px';
-    bal.style.top = ((speelveld.clientHeight - bal.offsetHeight)/2)+'px';
+    let ballLeftPos = ($("#speelveld").innerWidth() - $(bal).innerWidth())/2;
+    let ballTopPos = ($("#speelveld").innerHeight() - $(bal).innerHeight())/2;
 
-    speelveld.appendChild(bal);
+    $(bal).css("left",ballLeftPos);
+    $(bal).css("top",ballTopPos);
 
     let goalThuisploeg = document.createElement("div");
-    goalThuisploeg.classList.add("goal");
-    goalThuisploeg.style.width=speelveld.offsetWidth*0.4+'px';
-    goalThuisploeg.style.height=speelveld.offsetHeight*0.1+'px';
-    goalThuisploeg.innerText="Thuisploeg";
-    goalThuisploeg.style.top='0px';
-    goalThuisploeg.style.left = (speelveld.clientWidth - (speelveld.offsetWidth*0.4))/2+'px';
+    goalThuisploeg.id="goalThuisploeg";
 
+    $(goalThuisploeg).width(speelveld.innerWidth()*0.5);
+    $(goalThuisploeg).height(50);
+    $(goalThuisploeg).addClass("goal");
+    $(goalThuisploeg).css('top',0);
+    $(goalThuisploeg).css('left',($("#speelveld").innerWidth() - $(goalThuisploeg).innerWidth())/2);
+    $(goalThuisploeg).text(match.thuisploeg);
+    
     let goalUitploeg = document.createElement("div");
-    goalUitploeg.classList.add("goal");
-    goalUitploeg.style.width=speelveld.offsetWidth*0.4+'px';
-    goalUitploeg.style.height=speelveld.offsetHeight*0.1+'px';
-    goalUitploeg.innerText="uitploeg";
-    goalUitploeg.style.top=speelveld.clientHeight - (speelveld.offsetHeight*0.1) + 'px';
-    goalUitploeg.style.left = (speelveld.clientWidth - (speelveld.offsetWidth*0.4))/2+'px';
+    goalUitploeg.id="goalUitploeg";
 
-    speelveld.appendChild(goalThuisploeg);
-    speelveld.appendChild(goalUitploeg);
+    $(goalUitploeg).width(speelveld.innerWidth()*0.5);
+    $(goalUitploeg).height(50);
+    $(goalUitploeg).addClass("goal");
+    $(goalUitploeg).css('top',$("#speelveld").innerHeight() - $(goalUitploeg).innerHeight());
+    $(goalUitploeg).css('left',($("#speelveld").innerWidth() - $(goalUitploeg).innerWidth())/2);
+    $(goalUitploeg).text(match.uitploeg);
+
+    speelveld.append(goalThuisploeg);
+    speelveld.append(bal);
+    speelveld.append(goalUitploeg);
+
+
 }
