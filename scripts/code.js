@@ -7,6 +7,10 @@ let speelData = [];
 let ballTask;
 let gameRunning = false;
 
+const thuisGoalEvent = new Event('thuisGoal');
+const uitGoalEvent = new Event('uitGoal');
+
+
 class Match{
     constructor(thuisploeg,uitploeg) {
         this.thuisploeg = thuisploeg;
@@ -43,36 +47,40 @@ const updateLocation = (e)=>{
     if(gameRunning){
         clearInterval(ballTask);
         ballTask = setInterval(()=>{
-            let beta = e.beta;
-            let gamma = e.gamma;
+            if(gameRunning){
+                let beta = e.beta;
+                let gamma = e.gamma;
 
-            let newBalTop = Math.floor(parseFloat(document.getElementById("bal").style.top)+beta);
-            let maxBalTop = $("#speelveld").innerHeight() - $("#bal").innerHeight()
-            let minBalTop = 0;
+                let newBalTop = Math.floor(parseFloat(document.getElementById("bal").style.top)+beta);
+                let maxBalTop = $("#speelveld").innerHeight() - $("#bal").innerHeight()
+                let minBalTop = 0;
 
-            if(newBalTop > maxBalTop ){
-                newBalTop=maxBalTop;
+                if(newBalTop > maxBalTop ){
+                    newBalTop=maxBalTop;
+                }
+
+                if(newBalTop < minBalTop){
+                    newBalTop=minBalTop;
+                }
+
+                let newBalLeft = Math.floor(parseFloat(document.getElementById("bal").style.left)+gamma);
+                let minBalLeft = 0
+                let maxBalLeft = $("#speelveld").innerWidth() - $("#bal").innerWidth();
+
+                if(newBalLeft > maxBalLeft){
+                    newBalLeft = maxBalLeft;
+                }
+
+                if(newBalLeft < minBalLeft){
+                    newBalLeft = minBalLeft;
+                }
+
+
+                $("#bal").css("top",newBalTop);
+                $("#bal").css('left',newBalLeft);
+
+                detectGoal();
             }
-
-            if(newBalTop < minBalTop){
-                newBalTop=minBalTop;
-            }
-
-            let newBalLeft = Math.floor(parseFloat(document.getElementById("bal").style.left)+gamma);
-            let minBalLeft = 0
-            let maxBalLeft = $("#speelveld").innerWidth() - $("#bal").innerWidth();
-
-            if(newBalLeft > maxBalLeft){
-                newBalLeft = maxBalLeft;
-            }
-
-            if(newBalLeft < minBalLeft){
-                newBalLeft = minBalLeft;
-            }
-
-
-            $("#bal").css("top",newBalTop);
-            $("#bal").css('left',newBalLeft);
 
         },50);
     }
@@ -96,6 +104,50 @@ const loadSettings = () => {
     {
         console.log("geen settings gevonden");
     }
+}
+
+const detectGoal=()=>{
+    const bal = document.getElementById("bal");
+    const thuisGoal = document.getElementById("goalThuisploeg");
+    const uitGoal = document.getElementById("goalUitploeg");
+
+    let thuisXok = false;
+    let thuisYok = false;
+
+    if(($(bal).position().left > $(thuisGoal).position().left) && ($(bal).position().left < $(thuisGoal).position().left + $(thuisGoal).innerWidth()-$(bal).innerWidth())){
+        thuisXok = true;
+    }
+
+    if(($(bal).position().top < ($(thuisGoal).position().top + $(thuisGoal).innerHeight() ))){
+        thuisYok = true;
+    }
+
+    if(thuisXok && thuisYok){
+
+        dispatchEvent(thuisGoalEvent);
+        gameRunning = false;
+    }
+
+    let uitXok = false;
+    let uitYok = false;
+
+    if($(bal).position().top + $(bal).innerHeight() > $(uitGoal).position().top){
+        uitYok = true;
+    }
+
+    if(($(bal).position().left > $(uitGoal).position().left) && ($(bal).position().left < $(uitGoal).position().left + $(uitGoal).innerWidth() - $(bal).innerWidth())){
+        uitXok = true;
+
+    }
+
+    if(uitXok && uitYok){
+        dispatchEvent(uitGoalEvent);
+        gameRunning = false;
+    }
+
+
+
+
 }
 
 const loadData = () =>{
@@ -213,6 +265,15 @@ const loadMatch=(e)=>{
 const startGame = (match) => {
     let speelveld = $("#speelveld");
 
+    window.addEventListener('thuisGoal',()=>{
+        match.thuisscore++;
+        alert(match.thuisscore + " - " + match.uitscore);
+    })
+
+    window.addEventListener('uitGoal',()=>{
+        match.uitscore++;
+        alert(match.thuisscore + " - " + match.uitscore);
+    })
 
     let bal = document.createElement("img");
     $(bal).attr("src","images/ball.png");
