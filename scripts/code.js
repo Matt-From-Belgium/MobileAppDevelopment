@@ -125,7 +125,7 @@ const detectGoal=()=>{
     if(thuisXok && thuisYok){
 
         dispatchEvent(thuisGoalEvent);
-        gameRunning = false;
+
     }
 
     let uitXok = false;
@@ -142,7 +142,7 @@ const detectGoal=()=>{
 
     if(uitXok && uitYok){
         dispatchEvent(uitGoalEvent);
-        gameRunning = false;
+
     }
 
 
@@ -223,6 +223,12 @@ const prepareSpeelVeld = () =>{
 
     speelveld.append(goalThuisploeg);
     speelveld.append(goalUitploeg);
+
+    let bal = document.createElement("img");
+    $(bal).attr("src","images/ball.png");
+    $(bal).attr("id","bal");
+    speelveld.append(bal);
+    resetBall();
 }
 
 const loadSpeeldag = (e) =>{
@@ -268,16 +274,17 @@ const startGame = (match) => {
     window.addEventListener('thuisGoal',()=>{
         match.thuisscore++;
         alert(match.thuisscore + " - " + match.uitscore);
+        resetBall()
+        gameRunning=true;
     })
 
     window.addEventListener('uitGoal',()=>{
         match.uitscore++;
         alert(match.thuisscore + " - " + match.uitscore);
+        resetBall()
+        gameRunning=true;
     })
 
-    let bal = document.createElement("img");
-    $(bal).attr("src","images/ball.png");
-    $(bal).attr("id","bal");
 
     /*$(bal).attr("src","images/ball.png");
     $(bal).attr("id","bal");
@@ -294,9 +301,9 @@ const startGame = (match) => {
     let goalUitploeg = document.getElementById("goalUitploeg")
     $(goalUitploeg).text(match.uitploeg);
 
-    speelveld.append(bal);
+
     resetBall();
-    gameRunning=true;
+    gameRunning = true;
 
 
 
@@ -311,5 +318,7 @@ const resetBall = () => {
 
     $(bal).css("left",ballLeftPos);
     $(bal).css("top",ballTopPos);
+
+
 }
 
