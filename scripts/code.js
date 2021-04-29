@@ -6,10 +6,11 @@ let globalSettings={
 let speelData = [];
 let ballTask;
 let gameRunning = false;
+let displayUpCheck = false;
 
 const thuisGoalEvent = new Event('thuisGoal');
 const uitGoalEvent = new Event('uitGoal');
-
+const deviceDisplayUpEvent = new Event('deviceDisplayUp');
 
 class Match{
     constructor(thuisploeg,uitploeg) {
@@ -41,15 +42,25 @@ $( document ).ready(function(){
     })
 
     window.addEventListener('deviceorientation',updateLocation);
+    window.addEventListener('deviceDisplayUp',()=>{
+        displayUpCheck=true;
+        console.log('display up check ok!');
+    });
 })
 
 const updateLocation = (e)=>{
-    if(gameRunning){
+    let beta = e.beta;
+    let gamma = e.gamma;
+
+    if(beta == 0 && gamma == 0){
+        dispatchEvent(deviceDisplayUpEvent);
+    }
+
+    if(gameRunning && displayUpCheck){
         clearInterval(ballTask);
         ballTask = setInterval(()=>{
-            if(gameRunning){
-                let beta = e.beta;
-                let gamma = e.gamma;
+            if(gameRunning && displayUpCheck){
+
 
                 let newBalTop = Math.floor(parseFloat(document.getElementById("bal").style.top)+beta);
                 let maxBalTop = $("#speelveld").innerHeight() - $("#bal").innerHeight()
@@ -83,6 +94,10 @@ const updateLocation = (e)=>{
             }
 
         },50);
+    }
+    else
+    {
+        clearInterval(ballTask);
     }
 }
 
@@ -275,6 +290,9 @@ const startGame = (match) => {
         match.thuisscore++;
         alert(match.thuisscore + " - " + match.uitscore);
         resetBall()
+
+        alert('Hou het toestel horizontaal met de display naar boven gericht om te starten');
+        displayUpCheck = false;
         gameRunning=true;
     })
 
@@ -282,6 +300,9 @@ const startGame = (match) => {
         match.uitscore++;
         alert(match.thuisscore + " - " + match.uitscore);
         resetBall()
+
+        alert('Hou het toestel horizontaal met de display naar boven gericht om te starten');
+        displayUpCheck = false;
         gameRunning=true;
     })
 
@@ -303,6 +324,8 @@ const startGame = (match) => {
 
 
     resetBall();
+    alert('Hou het toestel horizontaal met de display naar boven gericht om te starten');
+    displayUpCheck = false;
     gameRunning = true;
 
 
