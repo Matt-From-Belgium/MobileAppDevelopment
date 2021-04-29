@@ -279,11 +279,14 @@ const startGame = (match) => {
     $(bal).attr("src","images/ball.png");
     $(bal).attr("id","bal");
 
+    /*$(bal).attr("src","images/ball.png");
+    $(bal).attr("id","bal");
+
     let ballLeftPos = ($("#speelveld").innerWidth() - $(bal).innerWidth())/2;
     let ballTopPos = ($("#speelveld").innerHeight() - $(bal).innerHeight())/2;
 
     $(bal).css("left",ballLeftPos);
-    $(bal).css("top",ballTopPos);
+    $(bal).css("top",ballTopPos);*/
 
     let goalThuisploeg = document.getElementById("goalThuisploeg")
     $(goalThuisploeg).text(match.thuisploeg);
@@ -292,9 +295,21 @@ const startGame = (match) => {
     $(goalUitploeg).text(match.uitploeg);
 
     speelveld.append(bal);
+    resetBall();
     gameRunning=true;
 
 
 
 
 }
+
+const resetBall = () => {
+    let bal = document.getElementById("bal");
+
+    let ballLeftPos = ($("#speelveld").innerWidth() - $(bal).innerWidth())/2;
+    let ballTopPos = ($("#speelveld").innerHeight() - $(bal).innerHeight())/2;
+
+    $(bal).css("left",ballLeftPos);
+    $(bal).css("top",ballTopPos);
+}
+
