@@ -52,7 +52,7 @@ const updateLocation = (e)=>{
     let beta = e.beta;
     let gamma = e.gamma;
 
-    if(beta == 0 && gamma == 0){
+    if(beta > -3 && beta < 3 && gamma > -3 && gamma < 3){
         dispatchEvent(deviceDisplayUpEvent);
     }
 
@@ -278,12 +278,12 @@ const loadMatch=(e)=>{
     let speeldag = $(target).jqmData('speeldag-index');
 
 
-    startGame(speeldag.matchen[match]);
+    startGame(speeldag.matchen[match],speeldag);
 }
 
 }
 
-const startGame = (match) => {
+const startGame = (match,speeldag) => {
     let speelveld = $("#speelveld");
 
     window.addEventListener('thuisGoal',()=>{
@@ -306,15 +306,6 @@ const startGame = (match) => {
         gameRunning=true;
     })
 
-
-    /*$(bal).attr("src","images/ball.png");
-    $(bal).attr("id","bal");
-
-    let ballLeftPos = ($("#speelveld").innerWidth() - $(bal).innerWidth())/2;
-    let ballTopPos = ($("#speelveld").innerHeight() - $(bal).innerHeight())/2;
-
-    $(bal).css("left",ballLeftPos);
-    $(bal).css("top",ballTopPos);*/
 
     let goalThuisploeg = document.getElementById("goalThuisploeg")
     $(goalThuisploeg).text(match.thuisploeg);
