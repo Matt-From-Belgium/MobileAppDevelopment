@@ -4,6 +4,8 @@ let globalSettings={
 };
 
 let speelData = [];
+let ballTask;
+let gameRunning = false;
 
 class Match{
     constructor(thuisploeg,uitploeg) {
@@ -33,7 +35,48 @@ $( document ).ready(function(){
     $('#formFavorietLand').submit(()=>{
         saveSettings();
     })
+
+    window.addEventListener('deviceorientation',updateLocation);
 })
+
+const updateLocation = (e)=>{
+    if(gameRunning){
+        clearInterval(ballTask);
+        ballTask = setInterval(()=>{
+            let beta = e.beta;
+            let gamma = e.gamma;
+
+            let newBalTop = Math.floor(parseFloat(document.getElementById("bal").style.top)+beta);
+            let maxBalTop = $("#speelveld").innerHeight() - $("#bal").innerHeight()
+            let minBalTop = 0;
+
+            if(newBalTop > maxBalTop ){
+                newBalTop=maxBalTop;
+            }
+
+            if(newBalTop < minBalTop){
+                newBalTop=minBalTop;
+            }
+
+            let newBalLeft = Math.floor(parseFloat(document.getElementById("bal").style.left)+gamma);
+            let minBalLeft = 0
+            let maxBalLeft = $("#speelveld").innerWidth() - $("#bal").innerWidth();
+
+            if(newBalLeft > maxBalLeft){
+                newBalLeft = maxBalLeft;
+            }
+
+            if(newBalLeft < minBalLeft){
+                newBalLeft = minBalLeft;
+            }
+
+
+            $("#bal").css("top",newBalTop);
+            $("#bal").css('left',newBalLeft);
+
+        },50);
+    }
+}
 
 const saveSettings = () => {
     globalSettings.favorietLand = document.getElementById("favorietland").value;
@@ -188,6 +231,7 @@ const startGame = (match) => {
     $(goalUitploeg).text(match.uitploeg);
 
     speelveld.append(bal);
+    gameRunning=true;
 
 
 
