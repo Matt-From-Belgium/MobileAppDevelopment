@@ -252,6 +252,10 @@ const loadSpeeldag = (e) => {
     let speeldagIndex = $(target).jqmData("speeldag-index");
     let speeldag = speelData[speeldagIndex];
 
+    fillSpeeldagListView(speeldag);
+}
+
+const fillSpeeldagListView=(speeldag)=>{
     let matchlist = $("#speeldagMatchListView");
     $(matchlist).empty();
 
@@ -288,6 +292,7 @@ const startGame = (match,speeldag) => {
     let speelveld = $("#speelveld");
 
     window.addEventListener('thuisGoal',()=>{
+        gameRunning = false;
         match.thuisscore++;
         alert(match.thuisscore + " - " + match.uitscore);
         resetBall()
@@ -298,6 +303,7 @@ const startGame = (match,speeldag) => {
     })
 
     window.addEventListener('uitGoal',()=>{
+        gameRunning = false;
         match.uitscore++;
         alert(match.thuisscore + " - " + match.uitscore);
         resetBall()
