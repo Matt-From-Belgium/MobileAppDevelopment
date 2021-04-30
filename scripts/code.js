@@ -184,7 +184,7 @@ const loadData = () =>{
         speelData.push(speeldag1);
         speelData.push(speeldag2);
 
-        localStorage.setItem("speelData",JSON.stringify(speelData));
+        saveData();
 
         console.log("speeldata aangemaakt");
 
@@ -207,6 +207,10 @@ const loadData = () =>{
             $("#speelDataListView").listview("refresh");
 
         }
+}
+
+const saveData=() => {
+    localStorage.setItem("speelData",JSON.stringify(speelData));
 }
 
 const prepareSpeelVeld = () =>{
@@ -300,6 +304,11 @@ const startGame = (match,speeldag) => {
         alert('Hou het toestel horizontaal met de display naar boven gericht om te starten');
         displayUpCheck = false;
         gameRunning=true;
+
+        //speeldaglistview opnieuw vullen
+        fillSpeeldagListView(speeldag);
+
+        saveData();
     })
 
     window.addEventListener('uitGoal',()=>{
@@ -311,6 +320,11 @@ const startGame = (match,speeldag) => {
         alert('Hou het toestel horizontaal met de display naar boven gericht om te starten');
         displayUpCheck = false;
         gameRunning=true;
+
+        //speeldaglistview opnieuw vullen
+        fillSpeeldagListView(speeldag);
+
+        saveData();
     })
 
 
