@@ -114,6 +114,8 @@ const loadSettings = () => {
     if(settings !== null){
         globalSettings = JSON.parse(settings);
         console.log("settings geladen");
+        document.getElementById("favorietland").value = globalSettings.favorietLand;
+        document.getElementById("kleur").value=globalSettings.favorietekleur;
     }
     else
     {
@@ -267,7 +269,39 @@ const fillSpeeldagListView=(speeldag)=>{
         let newLi = document.createElement("li");
         let newA = document.createElement("a");
         newA.href = "#pageSpeelveld";
-        newA.innerText = speeldag.matchen[match].thuisploeg + "- " + speeldag.matchen[match].uitploeg + " : " + speeldag.matchen[match].thuisscore + " - " + speeldag.matchen[match].uitscore;
+        //newA.innerText = speeldag.matchen[match].thuisploeg + "- " + speeldag.matchen[match].uitploeg + " : " + speeldag.matchen[match].thuisscore + " - " + speeldag.matchen[match].uitscore;
+
+        let thuisploegLabel = document.createElement("span");
+        thuisploegLabel.id="thuisploegLabel";
+        thuisploegLabel.innerText = speeldag.matchen[match].thuisploeg;
+
+        if(speeldag.matchen[match].thuisploeg==globalSettings.favorietLand){
+            thuisploegLabel.style.color=globalSettings.favorietekleur;
+        }
+
+        let uitploegLabel = document.createElement("span");
+        uitploegLabel.id="uitploegLabel";
+        uitploegLabel.innerText = speeldag.matchen[match].uitploeg;
+
+        if(speeldag.matchen[match].uitploeg == globalSettings.favorietLand){
+            uitploegLabel.style.color =globalSettings.favorietekleur;
+        }
+
+        let thuisploegScoreLabel = document.createElement("span");
+        thuisploegScoreLabel.id="thuisploegScoreLabel";
+        thuisploegScoreLabel.innerText = speeldag.matchen[match].thuisscore;
+
+        let uitploegScoreLabel = document.createElement("span");
+        uitploegScoreLabel.id = "uitploegScoreLabel";
+        uitploegScoreLabel.innerText = speeldag.matchen[match].uitscore;
+
+        newA.appendChild(thuisploegLabel);
+        $(newA).append(" - ");
+        newA.appendChild(uitploegLabel);
+        $(newA).append(" : ");
+        newA.appendChild(thuisploegScoreLabel);
+        $(newA).append(" - ");
+        newA.appendChild(uitploegScoreLabel);
 
         newLi.appendChild(newA);
         $(matchlist).append(newLi);
