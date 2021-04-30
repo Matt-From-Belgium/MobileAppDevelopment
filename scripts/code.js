@@ -196,7 +196,7 @@ const loadData = () =>{
 
 
             let a = document.createElement("a");
-            $(a).text(speeldag);
+            $(a).text("speeldag " + speeldag);
             a.href="#pageSpeeldag";
 
             $(li).append(a);
@@ -246,7 +246,7 @@ const prepareSpeelVeld = () =>{
     resetBall();
 }
 
-const loadSpeeldag = (e) =>{
+const loadSpeeldag = (e) => {
 
     let target = e.currentTarget;
     let speeldagIndex = $(target).jqmData("speeldag-index");
@@ -255,22 +255,23 @@ const loadSpeeldag = (e) =>{
     let matchlist = $("#speeldagMatchListView");
     $(matchlist).empty();
 
-    for(let match in speeldag.matchen){
+    for (let match in speeldag.matchen) {
         let newLi = document.createElement("li");
         let newA = document.createElement("a");
-        newA.href="#pageSpeelveld";
-        newA.innerText= speeldag.matchen[match].thuisploeg + "- " + speeldag.matchen[match].uitploeg + " : " + speeldag.matchen[match].thuisscore + " - "+ speeldag.matchen[match].uitscore;
+        newA.href = "#pageSpeelveld";
+        newA.innerText = speeldag.matchen[match].thuisploeg + "- " + speeldag.matchen[match].uitploeg + " : " + speeldag.matchen[match].thuisscore + " - " + speeldag.matchen[match].uitscore;
 
         newLi.appendChild(newA);
         $(matchlist).append(newLi);
         $(newLi).jqmData("match-index", match);
         $(newLi).jqmData('speeldag-index', speeldag);
-        $(newLi).click((e)=>{
+        $(newLi).click((e) => {
             loadMatch(e)
         })
     }
 
     matchlist.listview("refresh");
+}
 
 const loadMatch=(e)=>{
     let target = e.currentTarget;
@@ -281,7 +282,7 @@ const loadMatch=(e)=>{
     startGame(speeldag.matchen[match],speeldag);
 }
 
-}
+
 
 const startGame = (match,speeldag) => {
     let speelveld = $("#speelveld");
